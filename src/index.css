@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Poppins:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Poppins", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Lora", serif;
+  
+  --color-primary: #1E2A38;
+  --color-accent: #FF6B35;
+  --color-accent-hover: #E55A2B;
+  
+  --shadow-custom: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+@layer base {
+  body {
+    @apply font-sans text-[#2C3E50] bg-white leading-relaxed;
+  }
+  
+  h1, h2, h3, h4 {
+    @apply font-serif text-primary;
+  }
+}

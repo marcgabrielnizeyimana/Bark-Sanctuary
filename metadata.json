@@ -1,0 +1,6 @@
+{
+  "name": "Bark Sanctuary",
+  "description": "Rescue, Rehabilitate, Rehome - Dedicated to rescuing, rehabilitating, and rehoming neglected and abandoned dogs on Sacramento's outskirts.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

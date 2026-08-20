@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import logoImg from './assets/logo.png';
 import { 
   Menu, 
   X, 
@@ -24,7 +25,9 @@ import {
   ClipboardList,
   Building,
   ArrowRight,
-  Sparkles
+  Sparkles,
+  Calendar,
+  Eye
 } from 'lucide-react';
 
 const TikTokIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
@@ -37,6 +40,80 @@ const TikTokIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
     <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743 2.9 2.9 0 0 1 2.316-4.643c.277 0 .546.039.803.111V9.378a6.33 6.33 0 0 0-.803-.051C5.973 9.327 3.1 12.2 3.1 15.714c0 3.515 2.873 6.386 6.386 6.386 3.514 0 6.386-2.871 6.386-6.386V8.297a8.21 8.21 0 0 0 4.717 1.488v-3.099a4.808 4.808 0 0 1-1-.001z"/>
   </svg>
 );
+
+interface RescueStory {
+  id: string;
+  name: string;
+  breed: string;
+  tag: string;
+  location: string;
+  date: string;
+  status: string;
+  img: string;
+  shortDesc: string;
+  foundStory: string;
+  recoveryStory: string;
+  currentLife: string;
+}
+
+const RESCUE_STORIES: RescueStory[] = [
+  {
+    id: "sunny",
+    name: "Sunny",
+    breed: "Golden Retriever Mix Puppy",
+    tag: "Found in Abandoned Orchard",
+    location: "Rio Linda, Sacramento Outskirts",
+    date: "March 2026",
+    status: "Adopted into Forever Home",
+    img: "https://images.unsplash.com/photo-1593134257782-e89567b7718a?auto=format&fit=crop&w=1000&q=80",
+    shortDesc: "Rescued with a gentle spirit and a love for flowers",
+    foundStory: "Sunny was discovered shivering beneath an overturned wooden pallet in an overgrown lot. At barely 10 weeks old, he had survived cold spring rains on empty stomach.",
+    recoveryStory: "Our rescue dispatch team rushed him to urgent care for dehydration and tick treatment. With warm blankets, proper puppy nutrition, and daily reassurance, his playful personality blossomed.",
+    currentLife: "Today, Sunny is known as the sanctuary's 'flower boy' for gently holding dandelions to greet visitors. He has been adopted by a loving family in Roseville!"
+  },
+  {
+    id: "milo",
+    name: "Milo",
+    breed: "Welsh Corgi & Terrier Mix",
+    tag: "Highway Shoulder Rescue",
+    location: "South Sacramento Corridor",
+    date: "January 2026",
+    status: "Thriving in Foster-to-Adopt",
+    img: "https://images.unsplash.com/photo-1548767797-d8c844163c4c?auto=format&fit=crop&w=1000&q=80",
+    shortDesc: "Saved from fast-moving traffic with big alert ears",
+    foundStory: "Milo was spotted dodging cars along a dangerous highway shoulder near South Sacramento after being abandoned near an industrial siding.",
+    recoveryStory: "Terrified and exhausted, he was gently guided into our rescue vehicle with roasted chicken treats. After treating minor road scrapes and paw burns, he quickly bonded with our volunteers.",
+    currentLife: "Milo's huge radar ears and joyful spirit light up every room. He completed his puppy socialization milestones and is living with two playful dog siblings."
+  },
+  {
+    id: "pip",
+    name: "Pip",
+    breed: "French Bulldog Puppy",
+    tag: "Backyard Neglect Survivor",
+    location: "Rancho Cordova Outskirts",
+    date: "February 2026",
+    status: "Sanctuary Therapy Ambassador",
+    img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1000&q=80",
+    shortDesc: "Sleeping peacefully in his favorite yellow hoodie",
+    foundStory: "Pip was surrendered in critical condition suffering from respiratory distress and hypothermia after being kept outdoors during winter rains in an uninsulated pen.",
+    recoveryStory: "Our veterinary team placed Pip in an oxygen incubator and treated his skin infections. We kept him warm in custom fleece hoodies (his favorite bright yellow hoodie shown here!).",
+    currentLife: "Pip now sleeps peacefully with clear lungs and zero pain. He serves as Bark Sanctuary's official calm therapy pup, bringing comfort to newly arrived rescues."
+  },
+  {
+    id: "otis",
+    name: "Otis",
+    breed: "Frenchie Companion",
+    tag: "Healed from Spinal Trauma",
+    location: "Del Paso Heights, Sacramento",
+    date: "April 2026",
+    status: "Living His Best Life",
+    img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=1000&q=80",
+    shortDesc: "Full recovery and posing proudly in his hoodie",
+    foundStory: "Otis was left behind in an abandoned rental property. Weak and unable to bear weight on his hind leg, he was discovered by a neighbor who called our emergency hotline.",
+    recoveryStory: "Thanks to emergency donor sponsorships, Otis underwent donor-funded orthopedic therapy, daily hydrotherapy, and specialized joint rehabilitation over 8 weeks.",
+    currentLife: "Otis made a complete recovery! He walks, runs, and poses proudly for photos in his cozy yellow hoodie, surrounded by the love and stability he always deserved."
+  }
+];
 
 const MONTHLY_LINKS: Record<number, string> = {
   5: "https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-0D1981277X936950PNHMDI5A",
@@ -53,6 +130,7 @@ const ONE_TIME_BASE_URL = "https://www.paypal.com/ncp/payment/JKDWGLV9NC8AY";
 const FACEBOOK_URL = "https://www.facebook.com/share/18NGjCf5EA/";
 const INSTAGRAM_URL = "https://www.instagram.com/bark_sanctuary?igsh=MXQ5azJrNmRiZjd6aA==";
 const TIKTOK_URL = "https://www.tiktok.com/@barksanctuary";
+const SANCTUARY_EMAIL = "barksanctuary@gmail.com";
 
 // Subtle scroll blur and staggered item entry variants
 const sectionVariants = {
@@ -128,6 +206,9 @@ export default function App() {
   const [donationFrequency, setDonationFrequency] = useState<'one-time' | 'monthly'>('monthly');
   const [currentStoryImg, setCurrentStoryImg] = useState(0);
 
+  // Rescue Story Modal State
+  const [selectedRescueStory, setSelectedRescueStory] = useState<RescueStory | null>(null);
+
   // New Modals for Foster & Volunteer Applications inspired by Detroit Pit Crew
   const [isFosterModalOpen, setIsFosterModalOpen] = useState(false);
   const [isVolunteerModalOpen, setIsVolunteerModalOpen] = useState(false);
@@ -190,12 +271,15 @@ export default function App() {
       <header className="fixed top-0 left-0 w-full bg-[#0d131f]/95 backdrop-blur-md border-b border-white/5 z-50 py-3 transition-all duration-300 shadow-xl">
         <div className="container mx-auto px-4 flex justify-between items-center">
           <a href="#" className="text-white font-serif text-2xl font-bold flex items-center gap-3.5 group">
-            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full bg-white p-0.5 border-2 border-accent shadow-[0_0_20px_rgba(255,107,53,0.3)] ring-4 ring-accent/20 transition-transform group-hover:scale-105 duration-300 flex items-center justify-center shrink-0">
+            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-full bg-white p-0.5 border-2 border-accent shadow-[0_0_20px_rgba(255,107,53,0.3)] ring-4 ring-accent/20 transition-transform group-hover:scale-105 duration-300 flex items-center justify-center shrink-0 overflow-hidden">
               <img 
-                src="/logo.jpeg" 
+                src={logoImg} 
                 alt="Bark Sanctuary Logo" 
                 className="w-full h-full rounded-full object-cover"
                 referrerPolicy="no-referrer"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "/logo.png";
+                }}
               />
             </div>
             <div className="flex flex-col">
@@ -546,9 +630,9 @@ export default function App() {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                { icon: Dog, number: "1,240+", label: "Dogs Rescued" },
-                { icon: HeartPulse, number: "5,000+", label: "Medical Treatments" },
-                { icon: Home, number: "1,150+", label: "Adoptions Completed" }
+                { icon: Dog, number: "520+", label: "Dogs Rescued" },
+                { icon: HeartPulse, number: "2,150+", label: "Medical Treatments" },
+                { icon: Home, number: "480+", label: "Adoptions Completed" }
               ].map((stat, i) => (
                 <motion.div 
                   key={i}
@@ -576,35 +660,65 @@ export default function App() {
           className="py-20 bg-gray-50 transition-all duration-300"
         >
           <div className="container mx-auto px-4 text-center">
-            <motion.div variants={childVariants} className="mb-16">
+            <motion.div variants={childVariants} className="mb-6">
               <h2 className="text-4xl md:text-5xl font-serif text-primary font-bold tracking-tight">Faces of Survival</h2>
               <p className="text-muted text-xl max-w-2xl mx-auto mt-2">Behind every rescue is a story of resilience and unconditional love.</p>
             </motion.div>
+            <motion.p variants={childVariants} className="text-xs uppercase font-mono tracking-widest text-accent font-semibold mb-12 flex items-center justify-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" /> Click any photo to read their rescue story
+            </motion.p>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[
-                { img: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&h=600&q=80", name: "Barnaby", desc: "Rescued from industrial ditch" },
-                { img: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=600&h=600&q=80", name: "Luna", desc: "Healed from malnutrition" },
-                { img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&h=600&q=80", name: "Max & Cooper", desc: "Adopted together into forever home" },
-                { img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=600&h=600&q=80", name: "Bella", desc: "Safe in loving foster care" }
-              ].map((rescue, id) => (
-                <motion.div 
-                  key={id}
+              {RESCUE_STORIES.map((rescue) => (
+                <motion.button 
+                  key={rescue.id}
+                  type="button"
+                  onClick={() => setSelectedRescueStory(rescue)}
                   variants={childVariants}
-                  whileHover={{ scale: 1.02 }}
-                  className="relative aspect-square rounded-2xl overflow-hidden group shadow-lg border border-gray-200"
+                  whileHover={{ scale: 1.03, y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="relative aspect-square rounded-3xl overflow-hidden group shadow-lg border-2 border-transparent hover:border-accent/80 transition-all duration-300 text-left focus:outline-none focus:ring-4 focus:ring-accent/30 cursor-pointer block w-full bg-gray-100"
                 >
                   <img 
                     src={rescue.img} 
                     alt={rescue.name} 
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 text-left">
-                    <h4 className="text-white text-lg font-bold">{rescue.name}</h4>
-                    <p className="text-gray-300 text-sm">{rescue.desc}</p>
+                  
+                  {/* Subtle always-visible bottom gradient bar */}
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-4 flex items-end justify-between">
+                    <div>
+                      <h4 className="text-white text-base font-bold drop-shadow-sm">{rescue.name}</h4>
+                      <p className="text-gray-200 text-xs line-clamp-1">{rescue.shortDesc}</p>
+                    </div>
+                    <div className="bg-white/20 backdrop-blur-md p-1.5 rounded-full text-white group-hover:bg-accent group-hover:text-white transition-colors shrink-0">
+                      <Eye className="w-4 h-4" />
+                    </div>
                   </div>
-                </motion.div>
+
+                  {/* Hover interactive overlay */}
+                  <div className="absolute inset-0 bg-primary/85 opacity-0 group-hover:opacity-100 transition-all duration-300 flex flex-col justify-between p-5 text-white">
+                    <div className="flex justify-between items-start">
+                      <span className="bg-accent text-white text-[10px] font-bold uppercase font-mono px-2 py-1 rounded-full shadow">
+                        {rescue.status}
+                      </span>
+                      <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center">
+                        <Eye className="w-4 h-4 text-white" />
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-bold font-serif">{rescue.name}</h4>
+                      <p className="text-accent text-xs font-semibold mt-0.5">{rescue.breed}</p>
+                      <p className="text-gray-200 text-xs mt-2 line-clamp-2 leading-relaxed">
+                        {rescue.foundStory}
+                      </p>
+                      <span className="inline-flex items-center gap-1 text-[11px] font-bold text-accent mt-3 group-hover:underline">
+                        Read Full Story &rarr;
+                      </span>
+                    </div>
+                  </div>
+                </motion.button>
               ))}
             </div>
           </div>
@@ -802,7 +916,7 @@ export default function App() {
                   <Mail className="w-8 h-8 text-accent" />
                 </div>
                 <h4 className="text-xl font-bold text-primary">Email Us</h4>
-                <p className="text-muted leading-relaxed text-sm">peppersstewart3@gmail.com</p>
+                <p className="text-muted leading-relaxed text-sm">barksanctuary@gmail.com</p>
               </motion.div>
             </div>
 
@@ -835,12 +949,15 @@ export default function App() {
             {/* Column 1: Logo & Mission Statement */}
             <div className="space-y-6">
               <div className="flex items-center gap-3">
-                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white p-0.5 border-2 border-accent shadow-[0_0_20px_rgba(255,107,53,0.3)] ring-4 ring-accent/20 flex items-center justify-center shrink-0">
+                <div className="w-14 h-14 md:w-16 md:h-16 rounded-full bg-white p-0.5 border-2 border-accent shadow-[0_0_20px_rgba(255,107,53,0.3)] ring-4 ring-accent/20 flex items-center justify-center shrink-0 overflow-hidden">
                   <img 
-                    src="/logo.jpeg" 
+                    src={logoImg} 
                     alt="Bark Sanctuary Logo" 
                     className="w-full h-full rounded-full object-cover"
                     referrerPolicy="no-referrer"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = "/logo.png";
+                    }}
                   />
                 </div>
                 <div>
@@ -925,7 +1042,7 @@ export default function App() {
                     <MapPin className="w-4 h-4 text-accent shrink-0" /> Westhampton Way, Sacramento, CA
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail className="w-4 h-4 text-accent shrink-0" /> peppersstewart3@gmail.com
+                    <Mail className="w-4 h-4 text-accent shrink-0" /> barksanctuary@gmail.com
                   </p>
                 </div>
               </div>
@@ -1172,6 +1289,128 @@ export default function App() {
                   </button>
                 </form>
               )}
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* RESCUE STORY POPUP MODAL */}
+      <AnimatePresence>
+        {selectedRescueStory && (
+          <div 
+            className="fixed inset-0 bg-black/75 z-50 flex items-center justify-center p-4 backdrop-blur-sm"
+            onClick={() => setSelectedRescueStory(null)}
+          >
+            <motion.div 
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-white rounded-3xl max-w-2xl w-full text-primary shadow-2xl relative max-h-[92vh] overflow-y-auto border border-gray-100 overflow-hidden"
+            >
+              {/* Close Button */}
+              <button 
+                type="button"
+                onClick={() => setSelectedRescueStory(null)}
+                className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/80 text-white rounded-full p-2.5 backdrop-blur-md transition-all shadow-md"
+                aria-label="Close story popup"
+              >
+                <X className="w-5 h-5" />
+              </button>
+
+              {/* Top Hero Image with Status Badge */}
+              <div className="relative h-72 sm:h-80 w-full bg-gray-900">
+                <img 
+                  src={selectedRescueStory.img} 
+                  alt={selectedRescueStory.name} 
+                  className="w-full h-full object-cover"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                <div className="absolute bottom-4 left-6 right-6 flex flex-wrap items-end justify-between gap-3">
+                  <div>
+                    <span className="bg-accent text-white text-[11px] font-mono font-bold tracking-wider uppercase px-3 py-1 rounded-full shadow">
+                      {selectedRescueStory.status}
+                    </span>
+                    <h3 className="text-3xl sm:text-4xl font-serif font-bold text-white mt-1.5 drop-shadow">
+                      {selectedRescueStory.name}
+                    </h3>
+                    <p className="text-gray-200 text-sm font-medium">{selectedRescueStory.breed} &bull; {selectedRescueStory.age}</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Story Details Body */}
+              <div className="p-6 sm:p-8 space-y-6">
+                {/* Meta details bar */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 bg-gray-50 p-4 rounded-2xl border border-gray-100 text-xs">
+                  <div>
+                    <span className="text-gray-400 block uppercase font-mono text-[10px]">Location Found</span>
+                    <span className="font-semibold text-primary">{selectedRescueStory.location}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400 block uppercase font-mono text-[10px]">Rescue Date</span>
+                    <span className="font-semibold text-primary">{selectedRescueStory.date}</span>
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <span className="text-gray-400 block uppercase font-mono text-[10px]">Current Status</span>
+                    <span className="font-semibold text-accent">{selectedRescueStory.status}</span>
+                  </div>
+                </div>
+
+                {/* Narrative Sections */}
+                <div className="space-y-4">
+                  <div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-accent font-mono mb-1.5 flex items-center gap-1.5">
+                      <span>&bull;</span> The Rescue Story
+                    </h4>
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {selectedRescueStory.foundStory}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-accent font-mono mb-1.5 flex items-center gap-1.5">
+                      <span>&bull;</span> Medical Care & Rehabilitation
+                    </h4>
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {selectedRescueStory.recovery}
+                    </p>
+                  </div>
+
+                  <div>
+                    <h4 className="text-sm font-bold uppercase tracking-wider text-accent font-mono mb-1.5 flex items-center gap-1.5">
+                      <span>&bull;</span> Life Today
+                    </h4>
+                    <p className="text-gray-700 leading-relaxed text-sm">
+                      {selectedRescueStory.currentLife}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Call to action inside modal */}
+                <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row gap-3">
+                  <a
+                    href={ONE_TIME_BASE_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex-1 bg-accent hover:bg-accent-hover text-white py-3.5 px-6 rounded-xl font-bold text-center transition-all shadow-md flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Heart className="w-4 h-4 fill-current" /> Help Dogs Like {selectedRescueStory.name}
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedRescueStory(null);
+                      setIsFosterModalOpen(true);
+                    }}
+                    className="bg-gray-100 hover:bg-gray-200 text-primary py-3.5 px-6 rounded-xl font-bold text-center transition-all text-sm"
+                  >
+                    Foster a Street Dog
+                  </button>
+                </div>
+              </div>
             </motion.div>
           </div>
         )}

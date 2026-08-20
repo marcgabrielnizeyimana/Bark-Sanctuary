@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { 
-  PawPrint, 
   Menu, 
   X, 
   HeartPulse, 
@@ -28,6 +27,17 @@ import {
   Sparkles
 } from 'lucide-react';
 
+const TikTokIcon = ({ className = "w-6 h-6" }: { className?: string }) => (
+  <svg 
+    viewBox="0 0 24 24" 
+    fill="currentColor" 
+    className={className}
+    aria-hidden="true"
+  >
+    <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743 2.9 2.9 0 0 1 2.316-4.643c.277 0 .546.039.803.111V9.378a6.33 6.33 0 0 0-.803-.051C5.973 9.327 3.1 12.2 3.1 15.714c0 3.515 2.873 6.386 6.386 6.386 3.514 0 6.386-2.871 6.386-6.386V8.297a8.21 8.21 0 0 0 4.717 1.488v-3.099a4.808 4.808 0 0 1-1-.001z"/>
+  </svg>
+);
+
 const MONTHLY_LINKS: Record<number, string> = {
   5: "https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-0D1981277X936950PNHMDI5A",
   10: "https://www.paypal.com/webapps/billing/plans/subscribe?plan_id=P-9VT17510UJ871991RNHMDCVQ",
@@ -40,6 +50,9 @@ const MONTHLY_LINKS: Record<number, string> = {
 };
 
 const ONE_TIME_BASE_URL = "https://www.paypal.com/ncp/payment/JKDWGLV9NC8AY";
+const FACEBOOK_URL = "https://www.facebook.com/share/18NGjCf5EA/";
+const INSTAGRAM_URL = "https://www.instagram.com/bark_sanctuary?igsh=MXQ5azJrNmRiZjd6aA==";
+const TIKTOK_URL = "https://www.tiktok.com/@barksanctuary";
 
 // Subtle scroll blur and staggered item entry variants
 const sectionVariants = {
@@ -112,7 +125,7 @@ const rightVariants = {
 export default function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [donationAmount, setDonationAmount] = useState(5);
-  const [donationFrequency, setDonationFrequency] = useState<'one-time' | 'monthly'>('one-time');
+  const [donationFrequency, setDonationFrequency] = useState<'one-time' | 'monthly'>('monthly');
   const [currentStoryImg, setCurrentStoryImg] = useState(0);
 
   // New Modals for Foster & Volunteer Applications inspired by Detroit Pit Crew
@@ -127,15 +140,18 @@ export default function App() {
   const [fosterForm, setFosterForm] = useState({ name: '', email: '', phone: '', housing: 'house', experience: 'beginner', otherPets: 'no' });
   const [volunteerForm, setVolunteerForm] = useState({ name: '', email: '', phone: '', interest: 'care', availability: 'weekends' });
 
+  // Curated 9:16 high-resolution rescue dog portraits
   const storyImages = [
-    "https://picsum.photos/seed/rescue1/800/1000",
-    "https://picsum.photos/seed/rescue2/800/1000"
+    "https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=900&h=1600&q=80",
+    "https://images.unsplash.com/photo-1534361960057-19889db9621e?auto=format&fit=crop&w=900&h=1600&q=80",
+    "https://images.unsplash.com/photo-1587300003388-59208cc962cb?auto=format&fit=crop&w=900&h=1600&q=80",
+    "https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=900&h=1600&q=80"
   ];
 
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentStoryImg((prev) => (prev + 1) % storyImages.length);
-    }, 4000);
+    }, 4500);
     return () => clearInterval(timer);
   }, []);
 
@@ -143,7 +159,7 @@ export default function App() {
     if (donationFrequency === 'monthly') {
       return MONTHLY_LINKS[donationAmount] || MONTHLY_LINKS[5];
     }
-    return `${ONE_TIME_BASE_URL}?amount=${donationAmount}`;
+    return `${ONE_TIME_BASE_URL}?amount=${donationAmount}&currency_code=USD`;
   };
 
   const donationAmounts = [5, 10, 20, 50, 100, 200, 500, 1000];
@@ -350,20 +366,20 @@ export default function App() {
         >
           <div className="container mx-auto px-4">
             <div className="grid md:grid-cols-2 gap-12 items-center">
-              <motion.div variants={leftVariants} className="relative aspect-[3/4] rounded-2xl overflow-hidden shadow-2xl group max-w-md mx-auto w-full">
+              <motion.div variants={leftVariants} className="relative aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl group max-w-[320px] md:max-w-[360px] mx-auto w-full border border-gray-100">
                 <AnimatePresence mode="wait">
                   <motion.img 
                     key={currentStoryImg}
                     src={storyImages[currentStoryImg]}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 1.5 }}
+                    initial={{ opacity: 0, scale: 1.05 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 1.2 }}
                     className="absolute inset-0 w-full h-full object-cover"
                     referrerPolicy="no-referrer"
                   />
                 </AnimatePresence>
-                <div className="absolute inset-0 border-[4px] border-accent rounded-2xl -z-10 translate-x-4 translate-y-4 group-hover:translate-x-6 group-hover:translate-y-6 transition-transform" />
+                <div className="absolute inset-0 border-[3px] border-accent rounded-2xl -z-10 translate-x-3 translate-y-3 group-hover:translate-x-4 group-hover:translate-y-4 transition-transform" />
               </motion.div>
               
               <motion.div 
@@ -566,7 +582,12 @@ export default function App() {
             </motion.div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {[1, 2, 3, 4].map((id) => (
+              {[
+                { img: "https://images.unsplash.com/photo-1552053831-71594a27632d?auto=format&fit=crop&w=600&h=600&q=80", name: "Barnaby", desc: "Rescued from industrial ditch" },
+                { img: "https://images.unsplash.com/photo-1537151608828-ea2b11777ee8?auto=format&fit=crop&w=600&h=600&q=80", name: "Luna", desc: "Healed from malnutrition" },
+                { img: "https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=600&h=600&q=80", name: "Max & Cooper", desc: "Adopted together into forever home" },
+                { img: "https://images.unsplash.com/photo-1583337130417-3346a1be7dee?auto=format&fit=crop&w=600&h=600&q=80", name: "Bella", desc: "Safe in loving foster care" }
+              ].map((rescue, id) => (
                 <motion.div 
                   key={id}
                   variants={childVariants}
@@ -574,14 +595,14 @@ export default function App() {
                   className="relative aspect-square rounded-2xl overflow-hidden group shadow-lg border border-gray-200"
                 >
                   <img 
-                    src={`https://picsum.photos/seed/rescue${id+10}/600/600`} 
-                    alt={`Rescue ${id}`} 
+                    src={rescue.img} 
+                    alt={rescue.name} 
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
                     referrerPolicy="no-referrer"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-primary/95 via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-6 text-left">
-                    <h4 className="text-white text-lg font-bold">A Second Chance</h4>
-                    <p className="text-gray-300 text-sm">Recovering and resting safely.</p>
+                    <h4 className="text-white text-lg font-bold">{rescue.name}</h4>
+                    <p className="text-gray-300 text-sm">{rescue.desc}</p>
                   </div>
                 </motion.div>
               ))}
@@ -629,7 +650,7 @@ export default function App() {
           </div>
         </motion.section>
 
-        {/* DONATE WIDGET (RESERVED ABSOLUTELY WITH $200 AND ALL LINKS) */}
+        {/* DONATE WIDGET */}
         <motion.section 
           id="donate" 
           initial="hidden"
@@ -697,12 +718,12 @@ export default function App() {
                 <h4 className="text-2xl font-bold mb-6 font-serif">Quick Donation</h4>
                 <div className="bg-gray-50 p-6 rounded-2xl mb-6 border-2 border-dashed border-gray-200 flex items-center justify-center">
                   <img 
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://www.paypal.com/ncp/payment/JKDWGLV9NC8AY" 
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(getDonationLink())}`} 
                     alt="Donate QR Code" 
                     className="w-full aspect-square"
                   />
                 </div>
-                <p className="text-muted font-medium text-sm">Open your camera and scan the QR code to donate instantly.</p>
+                <p className="text-muted font-medium text-sm">Open your camera and scan the QR code to donate ${donationAmount} {donationFrequency === 'monthly' ? 'monthly' : 'now'}.</p>
               </motion.div>
             </div>
           </div>
@@ -787,16 +808,17 @@ export default function App() {
 
             <motion.div variants={childVariants} className="flex justify-center gap-6 mt-16">
               {[
-                { icon: Facebook, href: "https://www.facebook.com/share/18VCUE25yj/" },
-                { icon: Instagram, href: "https://www.instagram.com/bark_sanctuary?igsh=MXQ5azJrNmRiZjd6aA==" },
-                { icon: PawPrint, href: "https://www.tiktok.com/@barksanctuary" }
+                { icon: Facebook, href: FACEBOOK_URL, label: "Facebook" },
+                { icon: Instagram, href: INSTAGRAM_URL, label: "Instagram" },
+                { icon: TikTokIcon, href: TIKTOK_URL, label: "TikTok" }
               ].map((social, i) => (
                 <a 
                   key={i} 
                   href={social.href} 
                   target="_blank" 
                   rel="noreferrer"
-                  className="bg-white p-4 rounded-full text-primary hover:bg-accent hover:text-white shadow-md transition-all hover:-translate-y-1 border border-gray-100"
+                  aria-label={social.label}
+                  className="bg-white p-4 rounded-full text-primary hover:bg-accent hover:text-white shadow-md transition-all hover:-translate-y-1 border border-gray-100 flex items-center justify-center w-14 h-14"
                 >
                   <social.icon className="w-6 h-6" />
                 </a>
@@ -831,16 +853,17 @@ export default function App() {
               </p>
               <div className="flex items-center gap-3">
                 {[
-                  { icon: Facebook, href: "https://www.facebook.com/share/18VCUE25yj/" },
-                  { icon: Instagram, href: "https://www.instagram.com/bark_sanctuary?igsh=MXQ5azJrNmRiZjd6aA==" },
-                  { icon: PawPrint, href: "https://www.tiktok.com/@barksanctuary" }
+                  { icon: Facebook, href: FACEBOOK_URL, label: "Facebook" },
+                  { icon: Instagram, href: INSTAGRAM_URL, label: "Instagram" },
+                  { icon: TikTokIcon, href: TIKTOK_URL, label: "TikTok" }
                 ].map((social, i) => (
                   <a 
                     key={i} 
                     href={social.href} 
                     target="_blank" 
                     rel="noreferrer"
-                    className="bg-white/5 hover:bg-accent hover:text-white p-2.5 rounded-full text-gray-300 transition-all duration-300"
+                    aria-label={social.label}
+                    className="bg-white/5 hover:bg-accent hover:text-white p-2.5 rounded-full text-gray-300 transition-all duration-300 flex items-center justify-center w-10 h-10"
                   >
                     <social.icon className="w-5 h-5" />
                   </a>
